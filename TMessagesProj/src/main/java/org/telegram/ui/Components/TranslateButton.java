@@ -35,6 +35,8 @@ import org.telegram.ui.RestrictedLanguagesSelectActivity;
 
 import java.util.ArrayList;
 
+import tw.Lifemimi.Lifegram.settings.LifeLanguagesSelectActivity;
+
 public class TranslateButton extends FrameLayout {
 
     private final int currentAccount;
@@ -84,11 +86,11 @@ public class TranslateButton extends FrameLayout {
         menuView.setScaleType(ImageView.ScaleType.CENTER);
         menuView.setImageResource(R.drawable.msg_mini_customize);
         menuView.setOnClickListener(e -> {
-            if (UserConfig.getInstance(currentAccount).isPremium()) {
+            //if (UserConfig.getInstance(currentAccount).isPremium()) {
                 onMenuClick();
-            } else {
-                onCloseClick();
-            }
+            //} else {
+            //    onCloseClick();
+            //}
         });
         addView(menuView, LayoutHelper.createFrame(32, 32, Gravity.RIGHT | Gravity.CENTER_VERTICAL, 0, 0, 8, 0));
 
@@ -181,7 +183,7 @@ public class TranslateButton extends FrameLayout {
         ArrayList<TranslateController.Language> allLanguages = TranslateController.getLanguages();
         swipeBackScroll.addView(new ActionBarPopupWindow.GapView(getContext(), resourcesProvider), LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 8));
         if (currentTranslateTo != null) {
-            String displayName = TranslateAlert2.capitalFirst(TranslateAlert2.languageName(currentTranslateTo));
+            String displayName = "app".equals(currentTranslateTo) ? LocaleController.getString("TranslationTargetApp", R.string.TranslationTargetApp) : TranslateAlert2.capitalFirst(TranslateAlert2.languageName(currentTranslateTo));
             if (displayName != null) {
                 ActionBarMenuSubItem button = new ActionBarMenuSubItem(getContext(), 2, false, false, resourcesProvider);
                 button.setChecked(true);
@@ -192,6 +194,9 @@ public class TranslateButton extends FrameLayout {
         for (TranslateController.Language lng : suggestedLanguages) {
             final String code = lng.code;
             if (TextUtils.equals(code, detectedLanguage)) {
+                continue;
+            }
+            if (currentTranslateTo != null && currentTranslateTo.equals(code)) {
                 continue;
             }
 
@@ -249,7 +254,7 @@ public class TranslateButton extends FrameLayout {
             }
             dontTranslateButton.setTextAndIcon(text, R.drawable.msg_block2);
             dontTranslateButton.setOnClickListener(e -> {
-                RestrictedLanguagesSelectActivity.toggleLanguage(detectedLanguage, true);
+                LifeLanguagesSelectActivity.toggleLanguage(detectedLanguage, true);
                 translateController.checkRestrictedLanguagesUpdate();
                 translateController.setHideTranslateDialog(dialogId, true);
                 String bulletinTextString;
@@ -264,7 +269,7 @@ public class TranslateButton extends FrameLayout {
                     R.raw.msg_translate,
                     bulletinText,
                     LocaleController.getString("Settings", R.string.Settings),
-                    () -> fragment.presentFragment(new RestrictedLanguagesSelectActivity())
+                    () -> fragment.presentFragment(new LifeLanguagesSelectActivity(LifeLanguagesSelectActivity.TYPE_RESTRICTED, false))
                 ).show();
                 popupWindow.dismiss();
             });
@@ -320,6 +325,6 @@ public class TranslateButton extends FrameLayout {
             }
             textView.setText(TextUtils.concat(translateIcon, " ", text));
         }
-        menuView.setImageResource(UserConfig.getInstance(currentAccount).isPremium() ? R.drawable.msg_mini_customize : R.drawable.msg_close);
+        //menuView.setImageResource(UserConfig.getInstance(currentAccount).isPremium() ? R.drawable.msg_mini_customize : R.drawable.msg_close);
     }
 }

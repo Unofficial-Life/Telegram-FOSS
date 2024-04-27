@@ -142,8 +142,14 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: apksigner sign --ks telegram.jks --ks-pass env:KEYSTORE_PASSWORD --out ${{ env.main_project_module }}/build/outputs/apk/afat/debug/app-debug.apk ${{ env.main_project_module }}/build/outputs/apk/afat/debug/app.apk
 
-      - name: Upload APK Debug
-        uses: actions/upload-artifact@v3
+      - name: Upload APK Debug (arm64-v8a)
+        uses: actions/upload-artifact@v4
         with:
-          name: app-${{ github.sha }}-debug.apk
+          name: owlgram-debug-arm64-v8a-${{ env.GITHUB_SHA }}
+          path: ${{ env.main_project_module }}/build/outputs/apk/afat/debug/app-debug.apk
+
+      - name: Upload APK Debug (armeabi-v7a)
+        uses: actions/upload-artifact@v4
+        with:
+          name: owlgram-debug-armeabi-v7a-${{ env.GITHUB_SHA }}
           path: ${{ env.main_project_module }}/build/outputs/apk/afat/debug/app-debug.apk

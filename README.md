@@ -135,3 +135,4 @@ The project can be built with Android Studio or from the command line with gradl
 # DIGITAL RESISTANCE
 
 ![DIGITALRESISTANCE](/DigitalResistance.jpg?raw=true "DIGITALRESISTANCE")
+

@@ -78,9 +78,8 @@ if (nativeTarget == null) nativeTarget = ""
 android {
     compileSdkVersion 33
     buildToolsVersion '33.0.0'
-    
     ndkVersion "21.4.7075529"
-    ndkVersion ext.ndkVersion
+    
 
     defaultConfig.applicationId = "org.telegram.messenger"
 

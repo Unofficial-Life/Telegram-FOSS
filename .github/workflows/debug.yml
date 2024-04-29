@@ -45,11 +45,12 @@ jobs:
           path: /usr/local/lib/android/sdk/ndk/${{ env.ndk_version }}
           key: ${{ runner.os }}-ndk-${{ env.ndk_version }}
 
-      - name: Install Android NDK
-        if: steps.restore-ndk-cache.outputs.cache-hit != 'true'
-        env:
-          ndk_version: ${{ env.ndk_version }}
-        run: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;$ndk_version"
+      - name: Install NDK
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;21.4.7075529" --sdk_root=${ANDROID_SDK_ROOT} &> /dev/null
+          echo "sdk.dir=${ANDROID_HOME}" > local.properties
+          echo "ndk.dir=${ANDROID_HOME}/ndk/21.4.7075529" >> local.properties
 
       - name: Save NDK cache
         if: steps.restore-ndk-cache.outputs.cache-hit != 'true'

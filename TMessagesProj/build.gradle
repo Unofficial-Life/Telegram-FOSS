@@ -79,7 +79,7 @@ android {
     compileSdkVersion 33
     buildToolsVersion '33.0.0'
     
-    ndkVersion rootProject.ext.ndkVersion
+    ndkVersion ndk;$ndk_version
 
     defaultConfig.applicationId = "org.telegram.messenger"
 
